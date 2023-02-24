@@ -11,7 +11,7 @@ application_id = dbutils.secrets.get(scope="databricks-key-vault",key="applicati
 directory_id = dbutils.secrets.get(scope="databricks-key-vault",key="tenantid")
 
 storage_account = "nikodatabricksstorage"
-container_name = "tmp"
+container_name = username
 
 adls_path = f"abfss://{container_name}@{storage_account}.dfs.core.chinacloudapi.cn/"
 mount_point = f"/mnt/adls/{username}"
