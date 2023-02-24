@@ -49,12 +49,14 @@
 
 setup_responses = dbutils.notebook.run("./Utils/Setup-Batch", 0).split()
 
-local_data_path = setup_responses[0]
-dbfs_data_path = setup_responses[1]
-database_name = setup_responses[2]
+user_folder_adls_path = setup_responses[0]
+storage_account = setup_responses[1]
+container_name = setup_responses[2]
+database_name = setup_responses[3]
 
-print("Local data path is {}".format(local_data_path))
-print("DBFS path is {}".format(dbfs_data_path))
+print("User folder data path is {}".format(user_folder_adls_path))
+print("Storage account is {}".format(storage_account))
+print("Container is {}".format(container_name))
 print("Database name is {}".format(database_name))
 
 spark.sql(f"USE {database_name};")
@@ -87,7 +89,7 @@ spark.sql(f"USE {database_name};")
 
 # COMMAND ----------
 
-dataPath = f"{dbfs_data_path}/stores.csv"
+dataPath = f"abfss://dataset@{storage_account}.dfs.core.chinacloudapi.cn/stores.csv"
 
 df = spark.read\
   .option("header", "true")\
@@ -452,3 +454,7 @@ dbutils.fs.ls(table_location)
 # MAGIC %sql
 # MAGIC 
 # MAGIC select * from v_stores_country_limited;
+
+# COMMAND ----------
+
+
