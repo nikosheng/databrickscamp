@@ -23,7 +23,7 @@ service_credential = dbutils.secrets.get(scope="databricks-key-vault",key="clien
 application_id = dbutils.secrets.get(scope="databricks-key-vault",key="applicationid")
 directory_id = dbutils.secrets.get(scope="databricks-key-vault",key="tenantid")
 
-storage_account = "nikodatabricksstorage"
+storage_account = dbutils.widgets.get("storage_account_name")
 container_name = username
 
 user_folder_adls_path = f"abfss://{container_name}@{storage_account}.dfs.core.chinacloudapi.cn/{username}"

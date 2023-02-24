@@ -47,7 +47,8 @@
 
 # COMMAND ----------
 
-setup_responses = dbutils.notebook.run("./Utils/Setup-Batch", 0).split()
+storage_account_name = dbutils.widgets.get("storage_account_name")
+setup_responses = dbutils.notebook.run("./Utils/Setup-Batch", 0, {"storage_account_name": storage_account_name}).split()
 
 user_folder_adls_path = setup_responses[0]
 storage_account = setup_responses[1]
