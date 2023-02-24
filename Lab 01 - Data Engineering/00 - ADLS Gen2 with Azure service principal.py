@@ -6,13 +6,9 @@ dbutils.fs.mkdirs(f"/mnt/adls/{username}")
 
 # COMMAND ----------
 
-#service_credential = dbutils.secrets.get(scope="databricks-key-vault",key="clientsecret")
-#application_id = dbutils.secrets.get(scope="databricks-key-vault",key="applicationid")
-#directory_id = dbutils.secrets.get(scope="databricks-key-vault",key="tenantid")
-
-service_credential = "6~4Y8.3lpoQtrtUl7uquua6_6~_Q6z9OQ-"
-application_id = "9d042428-659c-41c2-9b0c-3f55e3a0c6b5"
-directory_id = "3c09bf56-7311-4092-b15b-688474f51f15"
+service_credential = dbutils.secrets.get(scope="databricks-key-vault",key="clientsecret")
+application_id = dbutils.secrets.get(scope="databricks-key-vault",key="applicationid")
+directory_id = dbutils.secrets.get(scope="databricks-key-vault",key="tenantid")
 
 storage_account = "nikodatabricksstorage"
 container_name = "tmp"
