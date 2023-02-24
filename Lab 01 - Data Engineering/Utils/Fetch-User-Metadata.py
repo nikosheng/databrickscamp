@@ -41,7 +41,7 @@ configs = {"fs.azure.account.auth.type": "OAuth",
 
 # Mounting ADLS Storage to DBFS
 # Mount only if the directory is not already mounted
-dbutils.fs.updateMount(
+dbutils.fs.mount(
   source = user_folder_adls_path,
   mount_point = user_folder_mount_point,
   extra_configs = configs)
