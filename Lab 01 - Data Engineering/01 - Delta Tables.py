@@ -47,6 +47,10 @@
 
 # COMMAND ----------
 
+dbutils.widgets.text("storage_account_name", "")
+
+# COMMAND ----------
+
 storage_account_name = dbutils.widgets.get("storage_account_name")
 setup_responses = dbutils.notebook.run("./Utils/Setup-Batch", 0, {"storage_account_name": storage_account_name}).split()
 
