@@ -17,6 +17,6 @@ spark.sql(f"USE {database_name}")
 
 # Return to the caller, passing the variables needed for file paths and database
 
-response = user_folder_adls_path + " " + user_folder_mount_point + " " + storage_account + " " + container_name + " " + database_name
+response = user_folder_adls_path + " " + user_folder_mount_point + " " + storage_account + " " + " " + database_name
 
 dbutils.notebook.exit(response)

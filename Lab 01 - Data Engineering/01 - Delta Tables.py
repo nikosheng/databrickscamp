@@ -47,23 +47,30 @@
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC ### Parameter Setup
+# MAGIC 
+# MAGIC We need to configure the `storage account` and `dataset` parameter above the notebook to identify the workshop artifacts location
+
+# COMMAND ----------
+
 dbutils.widgets.text("storage_account_name", "")
+dbutils.widgets.text("dataset_container_name", "")
 
 # COMMAND ----------
 
 storage_account_name = dbutils.widgets.get("storage_account_name")
-setup_responses = dbutils.notebook.run("./Utils/Setup-Batch", 0, {"storage_account_name": storage_account_name}).split()
+dataset_container_name = dbutils.widgets.get("dataset_container_name")
+setup_responses = dbutils.notebook.run("./Utils/Setup-Batch", 0, {"storage_account_name": storage_account_name, "dataset_container_name": dataset_container_name}).split()
 
 user_folder_adls_path = setup_responses[0]
 user_folder_mount_point = setup_responses[1]
 storage_account = setup_responses[2]
-container_name = setup_responses[3]
-database_name = setup_responses[4]
+database_name = setup_responses[3]
 
 print("User folder data path is {}".format(user_folder_adls_path))
 print("User folder mount point is {}".format(user_folder_mount_point))
 print("Storage account is {}".format(storage_account))
-print("Container is {}".format(container_name))
 print("Database name is {}".format(database_name))
 
 spark.sql(f"USE {database_name};")

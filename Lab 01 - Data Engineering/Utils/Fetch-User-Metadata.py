@@ -4,6 +4,8 @@ spark.conf.set("com.databricks.training.module_name", "ap_juice")
 user_id = spark.sql('select current_user() as user').collect()[0]['user']
 username = user_id.split("@")[0]
 
+dataset_container= dbutils.widgets.get("dataset_container_name")
+
 module_name = spark.conf.get("com.databricks.training.module_name")
 
 databaseName = (username+"_"+module_name).replace("[^a-zA-Z0-9]", "_") + "_db"
@@ -24,13 +26,13 @@ application_id = dbutils.secrets.get(scope="databricks-key-vault",key="applicati
 directory_id = dbutils.secrets.get(scope="databricks-key-vault",key="tenantid")
 
 storage_account = dbutils.widgets.get("storage_account_name")
-container_name = username
+user_container_name = username
 
-user_folder_adls_path = f"abfss://{container_name}@{storage_account}.dfs.core.chinacloudapi.cn/{username}"
+user_folder_adls_path = f"abfss://{user_container_name}@{storage_account}.dfs.core.chinacloudapi.cn/{username}"
 user_folder_mount_point = f"/mnt/adls/{username}"
 
-dataset_folder_adls_path = f"abfss://dataset@{storage_account}.dfs.core.chinacloudapi.cn/"
-dataset_folder_mount_point = "/mnt/adls/dataset"
+dataset_folder_adls_path = f"abfss://{dataset_container}@{storage_account}.dfs.core.chinacloudapi.cn/"
+dataset_folder_mount_point = f"/mnt/adls/{dataset_container}"
 
 # Connecting using Service Principal secrets and OAuth
 configs = {"fs.azure.account.auth.type": "OAuth",
