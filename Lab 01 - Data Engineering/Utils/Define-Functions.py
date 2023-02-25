@@ -1,11 +1,11 @@
 # Databricks notebook source
-# MAGIC %run ./Fetch-User-Metadata
+# MAGIC %run ./Fetch-User-Metadata-ELT
 
 # COMMAND ----------
 
 spark.sql(f"CREATE DATABASE IF NOT EXISTS {database_name}_aux")
 
-spark.read.json(f"{base_table_path}sales_202201.json").createOrReplaceTempView('jan_sales_view')
+spark.read.json(f"{dataset_folder_adls_path}sales_202201.json").createOrReplaceTempView('jan_sales_view')
 
 spark.sql(f"""
 CREATE TABLE IF NOT EXISTS {database_name}_aux.jan_sales

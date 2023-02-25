@@ -44,25 +44,34 @@
 
 # COMMAND ----------
 
-setup_responses = dbutils.notebook.run("./Utils/Setup-Batch", 0).split()
+dbutils.widgets.text("storage_account_name", "")
 
-local_data_path = setup_responses[0]
-dbfs_data_path = setup_responses[1]
-database_name = setup_responses[2]
+# COMMAND ----------
 
-bronze_table_path = f"{dbfs_data_path}tables/bronze"
-silver_table_path = f"{dbfs_data_path}tables/silver"
-gold_table_path = f"{dbfs_data_path}tables/gold"
+storage_account_name = dbutils.widgets.get("storage_account_name")
+setup_responses = dbutils.notebook.run("./Utils/Setup-Batch-ELT", 0, {"storage_account_name": storage_account_name}).split()
 
-autoloader_ingest_path = f"{dbfs_data_path}/autoloader_ingest/"
+user_folder_adls_path = setup_responses[0]
+user_folder_mount_point = setup_responses[1]
+storage_account = setup_responses[2]
+container_name = setup_responses[3]
+database_name = setup_responses[4]
+
+bronze_table_path = f"{user_folder_mount_point}/bronze"
+silver_table_path = f"{user_folder_mount_point}/silver"
+gold_table_path = f"{user_folder_mount_point}/gold"
+
+autoloader_ingest_path = f"{user_folder_mount_point}/autoloader_ingest/"
 
 # Remove all files from location in case there were any
 dbutils.fs.rm(bronze_table_path, recurse=True)
 dbutils.fs.rm(silver_table_path, recurse=True)
 dbutils.fs.rm(gold_table_path, recurse=True)
 
-print("Local data path is {}".format(local_data_path))
-print("DBFS path is {}".format(dbfs_data_path))
+print("User folder data path is {}".format(user_folder_adls_path))
+print("User folder mount point is {}".format(user_folder_mount_point))
+print("Storage account is {}".format(storage_account))
+print("Container is {}".format(container_name))
 print("Database name is {}".format(database_name))
 
 print("Brone Table Location is {}".format(bronze_table_path))
@@ -104,7 +113,7 @@ spark.sql(f"USE {database_name};")
 
 # COMMAND ----------
 
-data_file_location = f"{dbfs_data_path}/stores.csv"
+data_file_location = f"{dataset_folder_adls_path}/stores.csv"
 
 bronze_table_name = "bronze_store_locations"
 silver_table_name = "dim_locations"
@@ -145,7 +154,7 @@ silver_df.write \
 
 # COMMAND ----------
 
-data_file_location = f"{dbfs_data_path}/users.csv"
+data_file_location = f"{dataset_folder_adls_path}/users.csv"
 
 bronze_table_name = "bronze_customers"
 silver_table_name = "dim_customers"
@@ -184,7 +193,7 @@ silver_df.write \
 
 # COMMAND ----------
 
-data_file_location = f"{dbfs_data_path}/products.json"
+data_file_location = f"{dataset_folder_adls_path}/products.json"
 
 bronze_table_name = "bronze_products"
 silver_table_name = "dim_products"
@@ -233,8 +242,8 @@ silver_df.write \
 
 import pyspark.sql.functions as F
 
-checkpoint_path = f'{local_data_path}/_checkpoints'
-schema_path = f'{local_data_path}/_schema'
+checkpoint_path = f'{user_folder_mount_point}/_checkpoints'
+schema_path = f'{user_folder_mount_point}/_schema'
 write_path = f'{bronze_table_path}/bronze_sales'
 
 spark.sql("drop table if exists bronze_sales")
@@ -250,9 +259,9 @@ if refresh_autoloader_datasets:
   
   dbutils.fs.mkdirs(autoloader_ingest_path)
   
-  dbutils.fs.cp(f"{dbfs_data_path}/sales_202110.json", autoloader_ingest_path)
-  dbutils.fs.cp(f"{dbfs_data_path}/sales_202111.json", autoloader_ingest_path)
-  dbutils.fs.cp(f"{dbfs_data_path}/sales_202112.json", autoloader_ingest_path)
+  dbutils.fs.cp(f"{dataset_folder_adls_path}sales_202110.json", autoloader_ingest_path)
+  dbutils.fs.cp(f"{dataset_folder_adls_path}sales_202111.json", autoloader_ingest_path)
+  dbutils.fs.cp(f"{dataset_folder_adls_path}sales_202112.json", autoloader_ingest_path)
 
 
 

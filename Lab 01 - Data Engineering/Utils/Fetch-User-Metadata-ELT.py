@@ -12,13 +12,6 @@ spark.conf.set("com.databricks.training.spark.userName", username)
 
 # COMMAND ----------
 
-# personal lab folder
-dbutils.fs.mkdirs(f"/mnt/adls/dataset")
-# dataset folder
-dbutils.fs.mkdirs(f"/mnt/adls/{username}")
-
-# COMMAND ----------
-
 service_credential = dbutils.secrets.get(scope="databricks-key-vault",key="clientsecret")
 application_id = dbutils.secrets.get(scope="databricks-key-vault",key="applicationid")
 directory_id = dbutils.secrets.get(scope="databricks-key-vault",key="tenantid")
@@ -40,8 +33,8 @@ configs = {"fs.azure.account.auth.type": "OAuth",
            "fs.azure.account.oauth2.client.endpoint": f"https://login.partner.microsoftonline.cn/{directory_id}/oauth2/token"}
 
 # Mounting ADLS Storage to DBFS
-# Mount only if the directory is not already mounted
-dbutils.fs.mount(
+# use updateMount only if the directory is already mounted, if not, modify the updateMount method to mount
+dbutils.fs.updateMount(
   source = user_folder_adls_path,
   mount_point = user_folder_mount_point,
   extra_configs = configs)

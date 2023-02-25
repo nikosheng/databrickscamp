@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %run ./Fetch-User-Metadata
+# MAGIC %run ./Fetch-User-Metadata-ELT
 
 # COMMAND ----------
 
