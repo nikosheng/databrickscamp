@@ -1,8 +1,10 @@
 # Databricks notebook source
+import re
+
 spark.conf.set("com.databricks.training.module_name", "ap_juice")
 
 user_id = spark.sql('select current_user() as user').collect()[0]['user']
-username = user_id.split("@")[0]
+username = re.sub('[^a-zA-Z0-9]', '', user_id.split("@")[0])
 
 dataset_container= dbutils.widgets.get("dataset_container_name")
 
