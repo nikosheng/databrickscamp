@@ -38,7 +38,7 @@ configs = {"fs.azure.account.auth.type": "OAuth",
            "fs.azure.account.oauth2.client.endpoint": f"https://login.partner.microsoftonline.cn/{directory_id}/oauth2/token"}
 
 # Mounting Workshop Root Folder, if already mounted, use updateMount instead of mount
-dbutils.fs.updateMount(
+dbutils.fs.mount(
   source = workshop_folder_adls_path,
   mount_point = workshop_folder_mount_point,
   extra_configs = configs)

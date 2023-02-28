@@ -106,7 +106,7 @@ spark.sql(f"USE {database_name};")
 
 # COMMAND ----------
 
-dataPath = f"abfss://dataset@{storage_account}.dfs.core.chinacloudapi.cn/stores.csv"
+dataPath = f"abfss://{dataset_container_name}@{storage_account}.dfs.core.chinacloudapi.cn/stores.csv"
 
 df = spark.read\
   .option("header", "true")\
