@@ -56,12 +56,15 @@
 
 dbutils.widgets.text("storage_account_name", "")
 dbutils.widgets.text("dataset_container_name", "")
+dbutils.widgets.text("container_name", "")
 
 # COMMAND ----------
 
 storage_account_name = dbutils.widgets.get("storage_account_name")
 dataset_container_name = dbutils.widgets.get("dataset_container_name")
-setup_responses = dbutils.notebook.run("./Utils/Setup-Batch", 0, {"storage_account_name": storage_account_name, "dataset_container_name": dataset_container_name}).split()
+container_name = dbutils.widgets.get("container_name")
+
+setup_responses = dbutils.notebook.run("./Utils/Setup-Batch", 0, {"storage_account_name": storage_account_name, "dataset_container_name": dataset_container_name, "container_name": container_name}).split()
 
 user_folder_adls_path = setup_responses[0]
 user_folder_mount_point = setup_responses[1]
