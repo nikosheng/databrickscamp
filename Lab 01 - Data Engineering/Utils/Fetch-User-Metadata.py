@@ -1,4 +1,21 @@
 # Databricks notebook source
+# Mounting Workshop Root Folder, if already mounted, use updateMount instead of mount
+def mountADLS(adls_path, mount_point, configs):
+    try:
+        dbutils.fs.mount(
+            source = adls_path,
+            mount_point = mount_point,
+            extra_configs = configs
+        )
+    except:
+        dbutils.fs.updateMount(
+            source = adls_path,
+            mount_point = mount_point,
+            extra_configs = configs
+        )
+
+# COMMAND ----------
+
 import re
 
 spark.conf.set("com.databricks.training.module_name", "ap_juice")
@@ -38,10 +55,11 @@ configs = {"fs.azure.account.auth.type": "OAuth",
            "fs.azure.account.oauth2.client.endpoint": f"https://login.partner.microsoftonline.cn/{directory_id}/oauth2/token"}
 
 # Mounting Workshop Root Folder, if already mounted, use updateMount instead of mount
-dbutils.fs.mount(
-  source = workshop_folder_adls_path,
-  mount_point = workshop_folder_mount_point,
-  extra_configs = configs)
+#dbutils.fs.updateMount(
+#  source = workshop_folder_adls_path,
+#  mount_point = workshop_folder_mount_point,
+#  extra_configs = configs)
+mountADLS(workshop_folder_adls_path, workshop_folder_mount_point, configs)
 
 dbutils.fs.mkdirs(f"/mnt/adls/workshop/{username}")
 
@@ -55,10 +73,12 @@ dataset_folder_mount_point = f"/mnt/adls/{dataset_container}"
 
 # Mounting ADLS Storage to DBFS
 # Mount only if the directory is not already mounted
-dbutils.fs.mount(
-  source = user_folder_adls_path,
-  mount_point = user_folder_mount_point,
-  extra_configs = configs)
+#dbutils.fs.updateMount(
+#  source = user_folder_adls_path,
+#  mount_point = user_folder_mount_point,
+#  extra_configs = configs)
+
+mountADLS(user_folder_adls_path, user_folder_mount_point, configs)
 
 # COMMAND ----------
 

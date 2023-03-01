@@ -570,6 +570,12 @@ get_fixed_records_data(autoloader_ingest_path, 'SYD01','2022-01-01')
 # COMMAND ----------
 
 # MAGIC %sql
+# MAGIC select from_unixtime(ts) as ts, unix_timestamp() as exported_ts from jiashengfeng_ap_juice_db_aux.jan_sales
+# MAGIC where location = 'SYD01' and ts_date = '2022-01-01'
+
+# COMMAND ----------
+
+# MAGIC %sql
 # MAGIC 
 # MAGIC select * from bronze_sales order by inserted_at desc
 
